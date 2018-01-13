@@ -14,6 +14,5 @@ public class UnionLogProblem {
 
            Make sure the head lines are removed in the resulting RDD.
          */
-
     }
 }
