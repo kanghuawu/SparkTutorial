@@ -1,5 +1,10 @@
 package com.sparkTutorial.rdd.airports;
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
+
 public class AirportsByLatitudeProblem {
 
     public static void main(String[] args) throws Exception {
@@ -16,5 +21,14 @@ public class AirportsByLatitudeProblem {
            "Tofino", 49.082222
            ...
          */
+        SparkConf conf = new SparkConf().setAppName("airportusa").setMaster("local[*]");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        sc.textFile("in/airports.text")
+                .filter(line -> Double.valueOf(line.split(Utils.COMMA_DELIMITER)[6]) > 40)
+                .map(line -> {
+                    String[] strArr = line.split(Utils.COMMA_DELIMITER);
+                    return StringUtils.join(new String[]{strArr[1], strArr[6]}, ",");
+                })
+                .saveAsTextFile("out/airports_by_latitude.text");
     }
 }
