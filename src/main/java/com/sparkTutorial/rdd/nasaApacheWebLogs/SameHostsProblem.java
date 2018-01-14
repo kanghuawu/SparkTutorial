@@ -1,5 +1,9 @@
 package com.sparkTutorial.rdd.nasaApacheWebLogs;
 
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+
 public class SameHostsProblem {
 
     public static void main(String[] args) throws Exception {
@@ -19,5 +23,16 @@ public class SameHostsProblem {
 
            Make sure the head lines are removed in the resulting RDD.
          */
+        final String HEADER = "host\tlogname\ttime\tmethod\turl\tresponse\tbytes";
+        SparkConf conf = new SparkConf().setAppName("airportusa").setMaster("local[*]");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        JavaRDD<String> julyRdd = sc.textFile("in/nasa_19950701.tsv")
+                .filter(line -> !line.equals(HEADER))
+                .map(line -> line.split("\t")[0]);
+        JavaRDD<String> augRdd = sc.textFile("in/nasa_19950801.tsv")
+                .filter(line -> !line.equals(HEADER))
+                .map(line -> line.split("\t")[0]);
+        JavaRDD<String> intersectRdd = julyRdd.intersection(augRdd);
+        intersectRdd.saveAsTextFile("out/nasa_logs_same_hosts.csv");
     }
 }
