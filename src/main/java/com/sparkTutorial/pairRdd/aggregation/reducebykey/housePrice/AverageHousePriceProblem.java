@@ -1,6 +1,15 @@
 package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.PairFunction;
+import scala.Tuple2;
+
 public class AverageHousePriceProblem {
 
     public static void main(String[] args) throws Exception {
@@ -34,6 +43,22 @@ public class AverageHousePriceProblem {
 
            3, 1 and 2 mean the number of bedrooms. 325000 means the average price of houses with 3 bedrooms is 325000.
          */
+        Logger.getLogger("org").setLevel(Level.ERROR);
+        SparkConf conf = new SparkConf().setAppName("averagehouseprice").setMaster("local[*]");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        final String HEADER = "MLS,Location,Price,Bedrooms,Bathrooms,Size,Price SQ Ft,Status";
+        sc.textFile("in/RealEstate.csv")
+                .filter(line -> !line.equals(HEADER))
+                .mapToPair(getPairFunction())
+                .reduceByKey((price, count) -> new Tuple2<>(price._1 + count._1, price._2 + count._2))
+                .collectAsMap()
+                .forEach((key, tuple) -> System.out.printf("%2d : %.2f\n", key, (tuple._1/tuple._2)));
     }
 
+    private static PairFunction<String, Integer, Tuple2<Double, Integer>> getPairFunction() {
+        return line -> {
+            String[] strArr = line.split(",");
+            return new Tuple2<>(Integer.valueOf(strArr[3]), new Tuple2<>(Double.valueOf(strArr[2]), 1));
+        };
+    }
 }

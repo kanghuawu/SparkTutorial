@@ -1,5 +1,13 @@
 package com.sparkTutorial.pairRdd.mapValues;
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.PairFunction;
+import scala.Tuple2;
+
 public class AirportsUppercaseProblem {
 
     public static void main(String[] args) throws Exception {
@@ -19,5 +27,19 @@ public class AirportsUppercaseProblem {
            ("Wewak Intl", "PAPUA NEW GUINEA")
            ...
          */
+        Logger.getLogger("org").setLevel(Level.ERROR);
+        SparkConf conf = new SparkConf().setAppName("airportnotinusapairrdd").setMaster("local[*]");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        sc.textFile("in/airports.text")
+                .mapToPair(getPairFunction())
+                .mapValues(value -> value.toUpperCase())
+                .saveAsTextFile("out/airports_uppercase.text");
+    }
+
+    private static PairFunction<String, String, String> getPairFunction() {
+        return line -> {
+            String[] strArr = line.split(Utils.COMMA_DELIMITER);
+            return new Tuple2<>(strArr[1], strArr[3]);
+        };
     }
 }
