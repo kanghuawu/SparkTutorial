@@ -1,6 +1,17 @@
 package com.sparkTutorial.sparkSql;
 
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.sql.DataFrameReader;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+
+import static org.apache.spark.sql.functions.avg;
+import static org.apache.spark.sql.functions.col;
+import static org.apache.spark.sql.functions.max;
+
 public class HousePriceProblem {
 
         /* Create a Spark program to read the house data from in/RealEstate.csv,
@@ -38,4 +49,29 @@ public class HousePriceProblem {
         |.............................................|
 
          */
+
+    public static void main(String[] args) {
+        Logger.getLogger("org").setLevel(Level.ERROR);
+        SparkSession session = SparkSession.builder().appName("HousePrice").master("local[1]").getOrCreate();
+        DataFrameReader dataFrameReader = session.read();
+        Dataset<Row> housePrice = dataFrameReader.option("header","true").csv("in/RealEstate.csv");
+
+        System.out.println("=== Print out schema ===");
+        housePrice.printSchema();
+
+        System.out.println("=== Print 20 records of responses table ===");
+        housePrice.show(20);
+
+        System.out.println("=== 1. Group by location                                   ===");
+        System.out.println("=== 2. Aggregate the average price per SQ Ft and max price ===");
+        System.out.println("=== 3. Sort by average price per SQ Ft.                    ===");
+        housePrice.withColumn("Price", col("Price").cast("long"))
+                .withColumn("Price SQ Ft", col("Price SQ Ft").cast("long"))
+                .select(col("Location"), col("Price SQ Ft"), col("Price"))
+                .groupBy(col("Location"))
+                .agg(avg("Price SQ Ft"), max("Price"))
+                .orderBy(col("avg(Price SQ Ft)").desc())
+                .show();
+    }
+
 }
