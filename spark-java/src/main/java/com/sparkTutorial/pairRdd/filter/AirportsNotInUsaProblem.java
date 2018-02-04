@@ -29,11 +29,12 @@ public class AirportsNotInUsaProblem {
         SparkConf conf = new SparkConf().setAppName("airportnotinusapairrdd").setMaster("local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
         sc.textFile("in/airports.text")
+                .filter(line -> !line.split(Utils.COMMA_DELIMITER)[2].equals("\"United States\""))
                 .map(line -> {
                     String[] strArr = line.split(Utils.COMMA_DELIMITER);
                     return new Tuple2(strArr[1], strArr[2]);
                 })
-                .filter(tuple -> !tuple._2.equals("\"United States\""))
+//                .filter(tuple -> !tuple._2.equals("\"United States\""))
                 .saveAsTextFile("out/airports_not_in_usa_pair_rdd.text");
     }
 }
