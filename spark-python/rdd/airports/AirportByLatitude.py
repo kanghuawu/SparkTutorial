@@ -27,8 +27,7 @@ if __name__ == "__main__":
 
     conf = SparkConf().setAppName('airport_by_latitude').setMaster('local[*]')
     sc = SparkContext(conf=conf)
-    log4j = sc._jvm.org.apache.log4j
-    log4j.LogManager.getRootLogger().setLevel(log4j.Level.ERROR)
+    sc.setLogLevel('ERROR')
     sc.textFile('../../in/airports.text') \
         .filter(lambda line: float(Utils.COMMA_DELIMITER.split(line)[6]) > 40) \
         .map(lambda line: split_comma(line)) \

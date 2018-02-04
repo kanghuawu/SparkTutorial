@@ -6,6 +6,7 @@ from pyspark import SparkContext, SparkConf
 if __name__ == '__main__':
     conf = SparkConf().setAppName('wordcount').setMaster('local[*]')
     sc = SparkContext(conf=conf)
+    sc.setLogLevel('ERROR')
     word_count = sc.textFile('../in/word_count.text') \
         .flatMap(lambda line: line.split(' ')) \
         .countByValue()

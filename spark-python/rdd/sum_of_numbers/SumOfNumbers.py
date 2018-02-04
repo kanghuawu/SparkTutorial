@@ -12,8 +12,7 @@ if __name__ == '__main__':
 
     conf = SparkConf().setAppName('sum_of_numbers').setMaster('local[*]')
     sc = SparkContext(conf=conf)
-    log4j = sc._jvm.org.apache.log4j
-    log4j.LogManager.getRootLogger().setLevel(log4j.Level.ERROR)
+    sc.setLogLevel('ERROR')
     sum = sc.textFile('../../in/prime_nums.text') \
         .flatMap(lambda line: line.split('\t')) \
         .filter(lambda n: n) \
