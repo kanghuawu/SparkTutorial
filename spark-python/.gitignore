@@ -1,0 +1,8 @@
+*.iml
+*.ipr
+*.iws
+*.pyc
+out/
+build/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
