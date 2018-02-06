@@ -49,10 +49,10 @@ if __name__ == '__main__':
 
     print('=== Group by country and aggregate by average salary middle point and max age middle point ===')
     res_selected.groupBy(COUNTRY)\
-        .agg(F.avg(SALARY_MIDPOINT), F.min(SALARY_MIDPOINT), F.max(SALARY_MIDPOINT))\
+        .agg(F.avg(SALARY_MIDPOINT), F.max(AGE_MIDPOINT))\
         .show()
 
-    res_with_salary_bucket = res.withColumn(SALARY_MIDPOINT_BUCKET, ((res[SALARY_MIDPOINT]/20000).cast('integer')*2000))
+    res_with_salary_bucket = res.withColumn(SALARY_MIDPOINT_BUCKET, ((res[SALARY_MIDPOINT]/20000).cast('integer')*20000))
 
     print('=== With salary bucket column ===')
     res_with_salary_bucket.select(SALARY_MIDPOINT, SALARY_MIDPOINT_BUCKET).show()
