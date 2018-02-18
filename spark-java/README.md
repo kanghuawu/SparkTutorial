@@ -21,7 +21,7 @@
       * `collect`
       * **`count`**
       * **`countByValue`**
-      * **`take`
+      * **`take`**
       * `takeSample`
       * `takeOrdered`
       * **`reduce`**
@@ -77,3 +77,12 @@
 1. Execute `./gradlew idea` under this directory
 
 2. Open with IntelliJ
+
+## Data sets
+
+Data sets are under `in` folder, including:
+
+* airports.text
+* nasa_19950701.tsv, nasa_19950801.tsv
+* 2016-stack-overflow-survey-responses.csv
+* RealEstate.csv
