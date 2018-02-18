@@ -1,4 +1,4 @@
-# Spark with java 8
+# Spark with Java 8
 
 ## Topics:
 
