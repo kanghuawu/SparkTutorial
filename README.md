@@ -6,7 +6,8 @@ This repository is where I record my practice using Spark in Java 8 and Python. 
 
 There are detailed descriptions within each folder.
 
-* [spark-java](./spark-java)
-* [spark-python](./spark-python)
+* [spark-java](./spark-java) from Udemy free course
+* [spark-python](./spark-python) from Udemy free course
+* [spark-cassandra](./spark-cassandra) from Datastax Academy
 * [python-data-analysis](./python-data-analysis)
 * [python-cookbook](./python-cookbook)
