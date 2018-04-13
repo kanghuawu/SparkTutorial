@@ -12,6 +12,8 @@ public class StreamTransformation {
 
     public static void main(String[] args) throws InterruptedException {
 
+        Utilities.setUptTwitter();
+
         JavaStreamingContext ssc = new JavaStreamingContext("local[*]",
                 "StreamingTransformation", Durations.seconds(1));
 
