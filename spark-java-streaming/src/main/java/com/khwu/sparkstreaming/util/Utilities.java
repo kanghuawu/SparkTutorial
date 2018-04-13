@@ -10,7 +10,7 @@ import java.util.*;
 public class Utilities {
 
     public static void setUpLogging() {
-        Logger.getRootLogger().setLevel(Level.ERROR);
+        Logger.getLogger("org").setLevel(Level.ERROR);
     }
 
     public static void setUptTwitter() {

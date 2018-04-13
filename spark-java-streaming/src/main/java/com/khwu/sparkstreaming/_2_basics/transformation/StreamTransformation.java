@@ -7,13 +7,10 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
 import scala.Tuple2;
 import twitter4j.Status;
-import twitter4j.Twitter;
 
 public class StreamTransformation {
 
     public static void main(String[] args) throws InterruptedException {
-
-        Utilities.setUptTwitter();
 
         JavaStreamingContext ssc = new JavaStreamingContext("local[*]",
                 "StreamingTransformation", Durations.seconds(1));
