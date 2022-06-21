@@ -1,5 +1,5 @@
 findspark==1.1.0
-numpy==1.14.0
+numpy==1.22.0
 psutil==5.4.3
 py4j==0.10.4
 pyspark==2.2.1
